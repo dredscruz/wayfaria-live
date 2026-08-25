@@ -30,3 +30,5 @@ pnpm-lock.yaml
 
 # Keep favicon.ico and other assets that might be useful
 # !public/favicon.ico
+
+.vercel

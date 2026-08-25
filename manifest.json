@@ -1,7 +1,8 @@
 {
-  "name": "Wayfaria - Travel Companion",
+  "name": "wayfaria-prototype",
+  "version": "1.0.0",
+  "description": "Wayfaria travel app prototype with animated backgrounds, voice dictation, health profiles, and group sharing",
   "short_name": "Wayfaria",
-  "description": "Weather-aware travel planning with voice dictation, health profiles, and group sharing",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1a",
@@ -9,35 +10,9 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-192.png",
+      "src": "icons/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/svg+xml"
     }
   ]
 }
