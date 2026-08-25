@@ -32,3 +32,4 @@ pnpm-lock.yaml
 # !public/favicon.ico
 
 .vercel
+.env*
