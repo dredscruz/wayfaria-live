@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'export',
+  basePath: '/wayfaria-live',
+  assetPrefix: '/wayfaria-live',
   images: {
     unoptimized: true,
   },
@@ -12,7 +14,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  trailingSlash: true,
+  trailingSlash: false,
   async headers() {
     return [
       {
