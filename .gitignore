@@ -1,35 +1,43 @@
 # Dependencies
-/node_modules
-/.pnpm-cache
+node_modules/
+.pnp/
+.pnp.js
 
-# Build output
-/.next
-/out
+# Build outputs
+.next/
+out/
+dist/
+build/
 
-# Environment files
-.env
+# Vercel
+.vercel/
+.vercel_build_output/
+
+# Environment
 .env.local
-.env.development
-.env.staging
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IDE files
-.idea
-.vscode
-*.pem
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Package lockers
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Keep favicon.ico and other assets that might be useful
-# !public/favicon.ico
+# Coverage
+coverage/
 
-.vercel
-.env*
+# Temp
+temp/
+tmp/
