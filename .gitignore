@@ -1,0 +1,32 @@
+# Dependencies
+/node_modules
+/.pnpm-cache
+
+# Build output
+/.next
+/out
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+
+# IDE files
+.idea
+.vscode
+*.pem
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Package lockers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Keep favicon.ico and other assets that might be useful
+# !public/favicon.ico
