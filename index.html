@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Wayfaria — Your Adventure Companion</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Wayfaria">
+    <link rel="apple-touch-icon" href="icons/icon-192.svg">
+<style>
+:root {
+  --charcoal: #1a1a1a;
+  --periwinkle: #5d6cb1;
+  --periwinkle-dark: #4a5a91;
+  --gold: #ffc107;
+  --cream: #f5f3ee;
+  --cream-dark: #e8e5d6;
+  --card-bg: rgba(26, 26, 26, 0.9);
+  --text-primary: #f5f3ee;
+  --text-secondary: #b8b5a3;
+  --green: #10b981;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: radial-gradient(ellipse at top, #1a1a2e 0%, #1a1a1a 100%);
+}
+.adventure-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.stars {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: twinkle 3s infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0.4; transform: scale(0.9); }
+}
+.mountains {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 35%;
+  z-index: 1;
+  pointer-events: none;
+}
+.mountain {
+  position: absolute;
+  bottom: 0;
+  background: var(--charcoal);
+  opacity: 0.7;
+}
+.mountain-1 {
+  left: 5%; width: 35%; height: 70%;
+  clip-path: polygon(0% 100%, 50% 35%, 100% 100%);
+  animation: drift-slow 45s infinite linear;
+}
+.mountain-2 {
+  left: 60%; width: 40%; height: 65%;
+  clip-path: polygon(0% 100%, 40% 45%, 100% 100%);
+  animation: drift-medium 35s infinite linear;
+}
+@keyframes drift-slow {
+  0%, 100% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(-3px) scale(1.01); }
+}
+@keyframes drift-medium {
+  0%, 100% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(2px) scale(1.005); }
+}
+.destination-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  transition: opacity 3s ease;
+  z-index: 0;
+}
+.destination-bg.active {
+  opacity: 1;
+}
+.dest-kyoto {
+  background: linear-gradient(135deg,
+    rgba(26, 26, 42, 0.9) 0%,
+    rgba(40, 40, 60, 0.7) 50%,
+    rgba(93, 108, 177, 0.25) 100%);
+}
+.dest-paris {
+  background: linear-gradient(135deg,
+    rgba(26, 26, 42, 0.9) 0%,
+    rgba(60, 50, 40, 0.5) 50%,
+    rgba(255, 193, 7, 0.15) 100%);
+  background-image:
+    radial-gradient(circle at 60% 30%, rgba(255, 193, 7, 0.15) 0%, transparent 30%),
+    repeating-linear-gradient(135deg,
+      rgba(255, 193, 7, 0.03) 0px,
+      rgba(255, 193, 7, 0.03) 20px,
+      transparent 20px,
+      transparent 40px);
+}
+.dest-iceland {
+  background: linear-gradient(135deg,
+    rgba(10, 15, 35, 0.95) 0%,
+    rgba(15, 25, 50, 0.7) 50%,
+    rgba(93, 108, 177, 0.2) 100%);
+}
+.aurora {
+  position: absolute;
+  top: 15%; left: 0;
+  width: 100%; height: 60%;
+  z-index: 1;
+  pointer-events: none;
+}
+.aurora-wave {
+  position: absolute;
+  top: 25%; left: -50%;
+  width: 200%; height: 60px;
+  background: linear-gradient(90deg,
+    rgba(93, 108, 177, 0) 0%,
+    rgba(93, 108, 177, 0.4) 50%,
+    rgba(255, 193, 7, 0.3) 70%,
+    rgba(93, 108, 177, 0) 100%);
+  animation: aurora-wave 8s ease-in-out infinite;
+  filter: blur(3px);
+}
+.aurora-wave:nth-child(2) {
+  top: 40%;
+  animation-delay: 1s;
+  background: linear-gradient(90deg,
+    rgba(16, 185, 129, 0) 0%,
+    rgba(93, 108, 177, 0.3) 50%,
+    rgba(16, 185, 129, 0.4) 70%,
+    rgba(93, 108, 177, 0) 100%);
+}
+.aurora-wave:nth-child(3) {
+  top: 60%;
+  animation-delay: 2s;
+  height: 40px;
+}
+@keyframes aurora-wave {
+  0%, 100% { transform: translateX(0) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(-50%) scaleY(1.2); opacity: 0.8; }
+}
+.sakura {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.sakura-petal {
+  position: absolute;
+  background: rgba(255, 228, 185, 0.5);
+  border-radius: 50%;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+.content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.logo-section {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-top: 40px;
+}
+.logo {
+  display: inline-block;
+  width: 70px; height: 70px;
+  background: linear-gradient(135deg, var(--periwinkle), var(--gold));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  margin-bottom: 16px;
+  box-shadow: 0 0 30px rgba(93, 108, 177, 0.4);
+}
+h1 {
+  font-family: 'Georgia', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  color: var(--cream);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.entry-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto 16px;
+  padding: 0 16px;
+}
+@media (min-width: 768px) {
+  .entry-buttons { flex-direction: row; }
+}
+.entry-btn {
+  flex: 1;
+  background: var(--card-bg);
+  border: 3px solid var(--periwinkle);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px rgba(93, 108, 177, 0.3);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', sans-serif;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.6s ease forwards;
+}
+.entry-btn:nth-child(1) { animation-delay: 0.1s; }
+.entry-btn:nth-child(2) { animation-delay: 0.3s; }
+.entry-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0px rgba(93, 108, 177, 0.4);
+  border-color: var(--gold);
+}
+.entry-btn:active {
+  transform: translateY(1px);
+  box-shadow: 3px 3px 0px rgba(93, 108, 177, 0.3);
+}
+.entry-btn.secondary {
+  border-color: var(--gold);
+  box-shadow: 4px 4px 0px rgba(255, 193, 7, 0.3);
+}
+.entry-btn.secondary:hover {
+  border-color: var(--periwinkle);
+}
+.entry-btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  display: block;
+}
+.entry-btn-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.entry-btn-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.voice-section {
+  text-align: center;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+.voice-section p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.mic-btn {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--periwinkle), var(--gold));
+  border: 3px solid var(--periwinkle-dark);
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(255, 193, 7, 0.5);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.6s ease forwards 0.5s;
+}
+@keyframes fadeSlideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.mic-btn.listening {
+  animation: none;
+  box-shadow: 0 0 30px rgba(255, 193, 7, 0.8);
+}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 193, 7, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 193, 7, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 193, 7, 0.4); }
+}
+.voice-transcript {
+  background: var(--card-bg);
+  border: 2px dashed var(--periwinkle);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 16px auto;
+  max-width: 500px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.voice-transcript.active {
+  border-style: solid;
+  border-color: var(--gold);
+  background: rgba(26, 26, 26, 0.95);
+  color: var(--cream);
+}
+.no-signup-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0 16px;
+}
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: var(--card-bg);
+  border: 2px solid var(--periwinkle);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.theme-toggle:hover {
+  background: var(--periwinkle);
+  transform: scale(1.1);
+}
+.theme-toggle.active {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.theme-toggle .icon {
+  font-size: 1.2rem;
+}
+.share-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--periwinkle), var(--gold));
+  border: 3px solid var(--periwinkle-dark);
+  box-shadow: 0 4px 20px rgba(93, 108, 177, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+.share-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.share-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(93, 108, 177, 0.6);
+}
+.install-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 12px 20px;
+  background: var(--gold);
+  color: var(--charcoal);
+  border: 3px solid var(--periwinkle-dark);
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+.install-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.install-btn:hover {
+  background: #e6af2a;
+  transform: scale(1.05);
+}
+.light-theme {
+  background: linear-gradient(135deg, #e8e6f9 0%, #f5f3ee 50%, #fdfcff 100%) !important;
+}
+.light-theme .card,
+.light-theme .signin-section,
+.light-theme .feature-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: var(--periwinkle-dark);
+}
+.light-theme h1,
+.light-theme h3,
+.light-theme .card-title {
+  color: var(--charcoal);
+}
+.light-theme .subtitle {
+  color: #555;
+}
+@media (max-width: 768px) {
+  .entry-buttons { flex-direction: column; }
+  h1 { font-size: 2.2rem; }
+  .theme-toggle { top: 12px; right: 12px; width: 40px; height: 40px; }
+  .share-btn { bottom: 16px; right: 16px; width: 52px; height: 52px; }
+}
+</style>
+</head>
+<body>
+    <!-- ===== Animated Adventure Background ===== -->
+    <div class="adventure-bg">
+        <!-- Stars -->
+        <div class="stars" id="stars"></div>
+
+        <!-- Sakura petals for Kyoto -->
+        <div class="sakura" id="sakura"></div>
+
+        <!-- Destination layers (cycled by JS) -->
+        <div class="destination-bg dest-kyoto" id="dest-kyoto"></div>
+        <div class="destination-bg dest-paris" id="dest-paris"></div>
+        <div class="destination-bg dest-iceland" id="dest-iceland">
+            <div class="aurora">
+                <div class="aurora-wave"></div>
+                <div class="aurora-wave"></div>
+                <div class="aurora-wave"></div>
+            </div>
+        </div>
+
+        <!-- Parallax mountains -->
+        <div class="mountains">
+            <div class="mountain mountain-1"></div>
+            <div class="mountain mountain-2"></div>
+        </div>
+    </div>
+
+    <!-- Floating UI elements -->
+    <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+        <span class="icon" id="theme-icon">☀️</span>
+    </div>
+
+    <div class="share-btn" id="share-btn" onclick="shareApp()">
+        <span>🔗</span>
+    </div>
+
+    <div class="install-btn" id="install-btn">
+        📲 Install App
+    </div>
+
+    <!-- ===== ENTRY SCREEN ===== -->
+    <div class="content-layer">
+        <div class="logo-section">
+            <div class="logo"></div>
+            <h1>Every journey<br>deserves a companion</h1>
+            <p class="subtitle">
+                Weather-aware planning, group consensus, voice dictation,
+                and affordability insights — all in one travel app.
+                Your adventure starts here.
+            </p>
+        </div>
+
+        <div class="entry-buttons">
+            <div class="entry-btn" onclick="showSignin()">
+                <span class="entry-btn-icon">✈️</span>
+                <div class="entry-btn-text">I have plans already</div>
+                <div class="entry-btn-desc">Forward your confirmations or import from TripIt</div>
+            </div>
+            <div class="entry-btn secondary" onclick="showSignin('scratch')">
+                <span class="entry-btn-icon">✨</span>
+                <div class="entry-btn-text">No plan yet, start from scratch</div>
+                <div class="entry-btn-desc">Answer 3 questions or dictate your dream trip</div>
+            </div>
+        </div>
+
+        <div class="voice-section">
+            <p>Or speak your plans aloud:</p>
+            <div class="mic-btn" id="mic-btn" onclick="startVoiceDictation()">
+                🎙️
+            </div>
+            <div class="voice-transcript" id="voice-transcript">
+                Tap the mic and say "7 days in Kyoto, March, $2000 budget, temples and food tours"
+            </div>
+        </div>
+
+        <div class="no-signup-note">
+            Supports 50+ languages including Japanese, Spanish, French, German<br>
+            No signup required to start planning. Save locally, sync when you're ready.
+        </div>
+    </div>
+
+    <script>
+        /* ===== Theme Toggle (Light/Dark Mode) ===== */
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const icon = document.getElementById('theme-icon');
+            const toggle = document.getElementById('theme-toggle');
+            if (document.body.classList.contains('light-theme')) {
+                icon.textContent = '🌙';
+                toggle.classList.add('active');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.textContent = '☀️';
+                toggle.classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        /* Load saved theme preference */
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('theme-icon').textContent = '🌙';
+                document.getElementById('theme-toggle').classList.add('active');
+            }
+        }
+
+        /* ===== Share Button ===== */
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Wayfaria — Travel Companion',
+                    text: 'Weather-aware travel planning with voice dictation, health profiles, and group sharing.',
+                    url: window.location.href
+                }).catch(err => console.log('Share cancelled:', err));
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        /* ===== Voice Dictation ===== */
+        let voiceActive = false;
+        function startVoiceDictation() {
+            const mic = document.getElementById('mic-btn');
+            const transcript = document.getElementById('voice-transcript');
+
+            if (!voiceActive) {
+                voiceActive = true;
+                mic.classList.add('listening');
+                transcript.textContent = 'Listening...';
+                transcript.classList.add('active');
+
+                setTimeout(() => {
+                    voiceActive = false;
+                    mic.classList.remove('listening');
+                    transcript.textContent = '7 days in Kyoto, March, $2000 budget, temples and food tours';
+                    setTimeout(() => {
+                        mic.style.opacity = "0.5";
+                        setTimeout(() => {
+                            mic.style.opacity = "1";
+                            mic.style.transform = "scale(1)";
+                        }, 1000);
+                    }, 2000);
+                }, 3000);
+            }
+        }
+
+        /* ===== Generate Stars ===== */
+        function generateStars() {
+            const stars = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                stars.appendChild(star);
+            }
+        }
+
+        /* ===== Generate Sakura Petals ===== */
+        function generateSakura() {
+            const sakura = document.getElementById('sakura');
+            for (let i = 0; i < 30; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'sakura-petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.width = Math.random() * 8 + 4 + 'px';
+                petal.style.height = petal.style.width;
+                petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                petal.style.background = 'rgba(255, 228, 185, ' + (Math.random() * 0.5 + 0.3) + ')';
+                sakura.appendChild(petal);
+            }
+        }
+
+        /* ===== Cycle Destinations ===== */
+        let currentDest = 0;
+        const destinations = ['kyoto', 'paris', 'iceland'];
+
+        function cycleDestinations() {
+            const dests = document.querySelectorAll('.destination-bg');
+            dests.forEach(d => d.classList.remove('active'));
+
+            const activeDest = destinations[currentDest];
+            document.getElementById('dest-' + activeDest).classList.add('active');
+
+            // Show/hide sakura for Kyoto
+            const sakura = document.getElementById('sakura');
+            if (activeDest === 'kyoto') {
+                sakura.style.display = 'block';
+            } else {
+                sakura.style.display = 'none';
+            }
+
+            currentDest = (currentDest + 1) % destinations.length;
+        }
+
+        /* ===== PWA Install ===== */
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-btn').classList.add('visible');
+        });
+
+        document.getElementById('install-btn').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                    document.getElementById('install-btn').classList.remove('visible');
+                });
+            }
+        });
+
+        /* ===== Service Worker ===== */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+
+        /* ===== Dynamic Viewport Height for Mobile ===== */
+        function setViewportProperty() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}vh`);
+        }
+        window.addEventListener('resize', setViewportProperty);
+        setViewportProperty();
+
+        /* ===== Init ===== */
+        generateStars();
+        generateSakura();
+        cycleDestinations();
+        setInterval(cycleDestinations, 15000);
+        loadTheme();
+
+        // Show share button after load
+        setTimeout(() => {
+            document.getElementById('share-btn').classList.add('visible');
+        }, 500);
+
+        /* ===== Placeholder navigation ===== */
+        function showSignin(source) {
+            alert('🚀 Wayfaria is currently a prototype.\n\nFull signin integration coming soon!\n\nSource: ' + (source || 'existing-plans'));
+        }
+    </script>
+</body>
+</html>

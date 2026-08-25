@@ -1,41 +1,34 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependencies
 /node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+/.pnpm-cache
 
-# testing
-/coverage
+# Build output
+/.next
+/out
 
-# next.js
-/.next/
-/out/
+# Environment files
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
 
-# production
-/build
-
-# misc
-.DS_Store
+# IDE files
+.idea
+.vscode
 *.pem
+*.log
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# OS files
+.DS_Store
+Thumbs.db
 
-# env files (can opt-in for committing if needed)
-.env*
+# Package lockers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# vercel
+# Keep favicon.ico and other assets that might be useful
+# !public/favicon.ico
+
 .vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
