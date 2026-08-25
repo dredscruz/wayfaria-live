@@ -2,12 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'export',
   images: {
-    domains: [],
-    unoptimized: false,
-  },
-  experimental: {
-    // Enable app directory features
+    unoptimized: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -15,6 +12,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  trailingSlash: true,
   async headers() {
     return [
       {
