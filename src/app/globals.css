@@ -1,26 +1,58 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --charcoal: #1a1a1a;
+    --periwinkle: #5d6cb1;
+    --gold: #ffc107;
+    --cream: #f5f3ee;
+  }
+
+  .dark body {
+    background: linear-gradient(135deg, #0a0a12 0%, #1a1a1a 50%, #2a2a3a 100%);
+  }
+
+  .light body {
+    background: linear-gradient(135deg, #f0f0f5 0%, #e8e6f9 50%, #fdfcff 100%);
+    color: #1a1a1a;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .clip-diamond {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, var(--periwinkle), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Mobile viewport fix */
+@viewport {
+  zoom: 1.0;
+}
+html {
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--periwinkle);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
 }
